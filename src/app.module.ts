@@ -5,6 +5,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { OrdersModule } from './orders/orders.module';
 import { ItemModule } from './item/item.module';
+import { Orders } from './orders/infrastructure/entity/orders.entity';
+import { Item } from './item/infrastructure/entity/item.entiy';
 
 @Module({
   imports: [
@@ -18,7 +20,7 @@ import { ItemModule } from './item/item.module';
       username: process.env.PG_USER,
       password: process.env.PG_PASSWORD,
       database: process.env.PG_DB,
-      entities: [],
+      entities: [Orders, Item],
       synchronize: true,
       logging: true,
       autoLoadEntities: true,
