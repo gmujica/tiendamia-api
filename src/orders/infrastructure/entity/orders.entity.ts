@@ -1,11 +1,11 @@
 import { Item } from "src/item/infrastructure/entity/item.entiy";
-import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn, OneToMany } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn, OneToMany, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity()
 export class Orders {
   @PrimaryGeneratedColumn('uuid')
   @Generated('uuid')
-  id: string;
+  order_id: string;
 
   @Column()
   status: string;
@@ -17,12 +17,12 @@ export class Orders {
   shipping_address: string;
 
   @CreateDateColumn()
-  shipping_romise: Date;
+  shipping_promise: Date;
 
   @CreateDateColumn()
   created_date: Date;
 
-
-  @OneToMany(() => Item, item => item.id)
+  @ManyToOne(() => Item, (item) => item.item_id)
+  @JoinColumn({ name: "Items" })
   items: Item[];
 }

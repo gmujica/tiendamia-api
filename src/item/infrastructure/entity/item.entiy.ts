@@ -4,7 +4,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDa
 @Entity()
 export class Item {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  item_id: string;
 
   @Column()
   title: string;
@@ -18,8 +18,14 @@ export class Item {
   @Column()
   quantity: number;
 
-  @ManyToOne(() => Orders, (order) => order.items)
-  @JoinColumn({ name: "id" })
-  order: Orders;
+  /*@ManyToOne(() => Orders, (order) => order.items)
+  @JoinColumn({ name: "items" }) // Use a proper column name that corresponds to the foreign key
+  order: Orders;*/
+
+  /*@ManyToOne(() => Orders, (order) => order.items)
+  @JoinColumn({ name: "order_id" })
+  order: Orders;*/
+
+
 
 }
