@@ -1,4 +1,3 @@
-import { Orders } from "src/orders/infrastructure/entity/orders.entity";
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from "typeorm";
 
 @Entity()
@@ -18,14 +17,10 @@ export class Item {
   @Column()
   quantity: number;
 
-  /*@ManyToOne(() => Orders, (order) => order.items)
-  @JoinColumn({ name: "items" }) // Use a proper column name that corresponds to the foreign key
-  order: Orders;*/
+  @CreateDateColumn()
+  created_at: Date;
 
-  /*@ManyToOne(() => Orders, (order) => order.items)
-  @JoinColumn({ name: "order_id" })
-  order: Orders;*/
-
-
+  @CreateDateColumn()
+  updated_at: Date;
 
 }

@@ -20,7 +20,10 @@ export class Orders {
   shipping_promise: Date;
 
   @CreateDateColumn()
-  created_date: Date;
+  created_at: Date;
+
+  @CreateDateColumn()
+  updated_at: Date;
 
   @ManyToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: "Items" })
