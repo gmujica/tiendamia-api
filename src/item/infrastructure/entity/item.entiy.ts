@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from "typeorm";
+import { Orders } from "src/orders/infrastructure/entity/orders.entity";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn, JoinTable, ManyToMany } from "typeorm";
+
 
 @Entity()
 export class Item {
@@ -23,4 +25,10 @@ export class Item {
   @CreateDateColumn()
   updated_at: Date;
 
+  /*@ManyToOne(() => Orders, (order) => order.items)
+  order: Orders;*/
+
+  @ManyToMany(() => Orders, (order) => order.items)
+  orders: Orders[];
 }
+

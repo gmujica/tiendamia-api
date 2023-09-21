@@ -1,5 +1,5 @@
 import { Item } from "src/item/infrastructure/entity/item.entiy";
-import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn, OneToMany, JoinColumn, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn, OneToMany, JoinColumn, ManyToOne, JoinTable, ManyToMany } from "typeorm";
 
 @Entity()
 export class Orders {
@@ -20,12 +20,13 @@ export class Orders {
   shipping_promise: Date;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_date: Date;
 
-  @CreateDateColumn()
-  updated_at: Date;
+  /*@OneToMany(() => Item, (item) => item.item_id)
+  items: Item[];*/
 
-  @ManyToOne(() => Item, (item) => item.item_id)
-  @JoinColumn({ name: "Items" })
+  @ManyToMany(() => Item, (item) => item.orders)
+  @JoinTable()
   items: Item[];
+
 }
