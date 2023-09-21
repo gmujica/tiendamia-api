@@ -1,5 +1,13 @@
-import { Item } from "src/item/infrastructure/entity/item.entiy";
-import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn, OneToMany, JoinColumn, ManyToOne, JoinTable, ManyToMany } from "typeorm";
+import { Item } from 'src/item/infrastructure/entity/item.entiy';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Generated,
+  CreateDateColumn,
+  JoinTable,
+  ManyToMany,
+} from 'typeorm';
 
 @Entity()
 export class Orders {
@@ -22,11 +30,7 @@ export class Orders {
   @CreateDateColumn()
   created_date: Date;
 
-  /*@OneToMany(() => Item, (item) => item.item_id)
-  items: Item[];*/
-
   @ManyToMany(() => Item, (item) => item.orders)
   @JoinTable()
   items: Item[];
-
 }

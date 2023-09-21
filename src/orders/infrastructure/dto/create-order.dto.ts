@@ -3,18 +3,18 @@
 import { IsString, IsArray, IsDateString } from 'class-validator';
 
 export class CreateOrderDto {
-    @IsString()
-    status: string;
+  @IsString()
+  status: string;
 
-    @IsString()
-    client: string;
+  @IsString()
+  client: string;
 
-    @IsString()
-    shipping_address: string;
+  @IsString()
+  shipping_address: string;
 
-    @IsDateString()
-    shipping_promise: Date;
+  @IsDateString()
+  shipping_promise: Date;
 
-    @IsArray()
-    itemIds: string[];
+  @IsArray()
+  itemIds: string[];
 }

@@ -1,9 +1,9 @@
 import { IsDateString } from 'class-validator';
 
 export class DateRangeDto {
-    @IsDateString()
-    startDate: string;
+  @IsDateString()
+  startDate: string;
 
-    @IsDateString()
-    endDate: string;
+  @IsDateString()
+  endDate: string;
 }

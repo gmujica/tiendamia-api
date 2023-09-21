@@ -1,10 +1,15 @@
-import { Orders } from "src/orders/infrastructure/entity/orders.entity";
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn, JoinTable, ManyToMany } from "typeorm";
-
+import { Orders } from 'src/orders/infrastructure/entity/orders.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  ManyToMany,
+} from 'typeorm';
 
 @Entity()
 export class Item {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   item_id: string;
 
   @Column()
@@ -31,4 +36,3 @@ export class Item {
   @ManyToMany(() => Orders, (order) => order.items)
   orders: Orders[];
 }
-
