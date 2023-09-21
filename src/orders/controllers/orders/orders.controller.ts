@@ -134,4 +134,19 @@ export class OrdersController {
     );
     return report;
   }
+  // Get orders in "Approve" status with less than 2 days left for shipping promise
+  @Get('reports/approve-orders-with-deadline')
+  @ApiOperation({
+    summary:
+      'Get orders in Approve status with less than 2 days left for shipping promise',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved the report.',
+  })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiTags('Reports')
+  async getApproveOrdersWithShippingPromiseDeadline(): Promise<Orders[]> {
+    return await this.orderService.getApproveOrdersWithShippingPromiseDeadline();
+  }
 }

@@ -30,9 +30,6 @@ export class Item {
   @CreateDateColumn()
   updated_at: Date;
 
-  /*@ManyToOne(() => Orders, (order) => order.items)
-  order: Orders;*/
-
   @ManyToMany(() => Orders, (order) => order.items)
   orders: Orders[];
 }

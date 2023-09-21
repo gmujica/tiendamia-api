@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Item } from 'src/item/infrastructure/entity/item.entiy';
 import { DateRangeDto } from 'src/orders/infrastructure/dto/date-range.dto';
 import { Orders } from 'src/orders/infrastructure/entity/orders.entity';
-import { Between, Repository } from 'typeorm';
+import { Between, LessThan, Repository } from 'typeorm';
 
 @Injectable()
 export class OrdersService {
@@ -104,5 +104,19 @@ export class OrdersService {
     });
 
     return report;
+  }
+  // Get orders in "Approve" status with less than 2 days left for shipping promise
+  async getApproveOrdersWithShippingPromiseDeadline(): Promise<Orders[]> {
+    const twoDaysFromNow = new Date();
+    twoDaysFromNow.setDate(twoDaysFromNow.getDate() + 2);
+
+    const orders = await this.orderRepository.find({
+      where: {
+        status: 'Approve',
+        shipping_promise: LessThan(twoDaysFromNow),
+      },
+    });
+
+    return orders;
   }
 }
