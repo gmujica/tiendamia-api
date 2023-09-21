@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post, Put, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Delete, Query } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OrdersService } from 'src/orders/application/orders/orders.service';
+import { DateRangeDto } from 'src/orders/infrastructure/dto/date-range.dto';
 import { Orders } from 'src/orders/infrastructure/entity/orders.entity';
 
 @Controller('orders')
@@ -88,6 +89,20 @@ export class OrdersController {
     @ApiTags('Orders')
     async deleteOrder(@Param('id') order_id: string): Promise<void> {
         await this.orderService.deleteOrder(order_id);
+    }
+    // Report: Get orders in Traveling status within a date range
+    @Get('reports/traveling')
+    @ApiOperation({ summary: 'Get orders in Traveling status within a date range' })
+    @ApiResponse({ status: 200, description: 'Successfully retrieved the report.' })
+    @ApiResponse({ status: 400, description: 'Bad request' })
+    @ApiTags('Reports')
+    async getTravelingOrdersReport(
+        @Query('startDate') startDate: string,
+        @Query('endDate') endDate: string,
+    ): Promise<Orders[]> {
+        const dateRangeDto: DateRangeDto = { startDate, endDate };
+        const report = await this.orderService.getTravelingOrdersReport(dateRangeDto);
+        return report;
     }
 
 

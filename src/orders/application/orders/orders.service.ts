@@ -2,8 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Item } from 'src/item/infrastructure/entity/item.entiy';
+import { DateRangeDto } from 'src/orders/infrastructure/dto/date-range.dto';
 import { Orders } from 'src/orders/infrastructure/entity/orders.entity';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 
 @Injectable()
 export class OrdersService {
@@ -81,6 +82,21 @@ export class OrdersService {
 
         // Delete the order
         await this.orderRepository.remove(existingOrder);
+    }
+    // traveling report
+    async getTravelingOrdersReport(dateRangeDto: DateRangeDto): Promise<Orders[]> {
+        const { startDate, endDate } = dateRangeDto;
+        const parsedStartDate = new Date(startDate);
+        const parsedEndDate = new Date(endDate);
+
+        const report = await this.orderRepository.find({
+            where: {
+                status: 'Traveling',
+                shipping_promise: Between(parsedStartDate, parsedEndDate),
+            },
+        });
+
+        return report;
     }
 
 
