@@ -10,7 +10,7 @@ import { Item } from './item/infrastructure/entity/item.entiy';
 
 @Module({
   imports: [
-    OrdersModule, 
+    OrdersModule,
     ItemModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
