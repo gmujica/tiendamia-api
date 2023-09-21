@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Item } from 'src/item/infrastructure/entity/item.entiy';
 import { Orders } from 'src/orders/infrastructure/entity/orders.entity';
@@ -16,7 +17,6 @@ export class OrdersService {
     async findAll(): Promise<Orders[]> {
         return await this.orderRepository.find();
     }
-    
    // Create a new order
    async createOrder(orderData: Partial<Orders>, itemIds: string[]): Promise<Orders> {
         const newOrder = this.orderRepository.create(orderData);
@@ -55,4 +55,33 @@ export class OrdersService {
         };
         return formattedOrder;
     }
+    // Update an existing order by ID
+    async updateOrder(order_id: string, updatedOrder: Partial<Orders>): Promise<Orders> {
+        const existingOrder = await this.findOnebyId(order_id);
+
+        if (!existingOrder) {
+            throw new NotFoundException(`Order with ID ${order_id} not found.`);
+        }
+
+        // Merge the changes into the existing order entity
+        const mergedOrder = this.orderRepository.merge(existingOrder, updatedOrder);
+
+        // Save the updated order
+        const savedOrder = await this.orderRepository.save(mergedOrder);
+
+        return savedOrder;
+    }
+    // Delete an order by ID
+    async deleteOrder(order_id: string): Promise<void> {
+        const existingOrder = await this.findOnebyId(order_id);
+
+        if (!existingOrder) {
+            throw new NotFoundException(`Order with ID ${order_id} not found.`);
+        }
+
+        // Delete the order
+        await this.orderRepository.remove(existingOrder);
+    }
+
+
 }
