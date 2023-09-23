@@ -1,4 +1,4 @@
-import { Orders } from 'src/orders/infrastructure/entity/orders.entity';
+import { Orders } from '../../../orders/infrastructure/entity/orders.entity';
 import {
   Entity,
   Column,
@@ -21,7 +21,7 @@ export class Item {
   @Column()
   price: string;
 
-  @Column()
+  @Column({nullable: true})
   url: string;
 
   @Column()

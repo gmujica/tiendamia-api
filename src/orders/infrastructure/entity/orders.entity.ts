@@ -1,4 +1,4 @@
-import { Item } from 'src/item/infrastructure/entity/item.entiy';
+import { Item } from '../../../item/infrastructure/entity/item.entiy';
 import {
   Entity,
   Column,
