@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Item } from 'src/item/infrastructure/entity/item.entiy';
-import { DateRangeDto } from 'src/orders/infrastructure/dto/date-range.dto';
-import { Orders } from 'src/orders/infrastructure/entity/orders.entity';
-import { Between, LessThan, Repository } from 'typeorm';
+import { Item } from '../../../item/infrastructure/entity/item.entiy';
+import { Orders } from '../../infrastructure/entity/orders.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class OrdersService {
@@ -69,10 +68,8 @@ export class OrdersService {
       throw new NotFoundException(`Order with ID ${order_id} not found.`);
     }
 
-    // Merge the changes into the existing order entity
     const mergedOrder = this.orderRepository.merge(existingOrder, updatedOrder);
 
-    // Save the updated order
     const savedOrder = await this.orderRepository.save(mergedOrder);
 
     return savedOrder;
@@ -87,36 +84,5 @@ export class OrdersService {
 
     // Delete the order
     await this.orderRepository.remove(existingOrder);
-  }
-  // traveling report
-  async getTravelingOrdersReport(
-    dateRangeDto: DateRangeDto,
-  ): Promise<Orders[]> {
-    const { startDate, endDate } = dateRangeDto;
-    const parsedStartDate = new Date(startDate);
-    const parsedEndDate = new Date(endDate);
-
-    const report = await this.orderRepository.find({
-      where: {
-        status: 'Traveling',
-        shipping_promise: Between(parsedStartDate, parsedEndDate),
-      },
-    });
-
-    return report;
-  }
-  // Get orders in "Approve" status with less than 2 days left for shipping promise
-  async getApproveOrdersWithShippingPromiseDeadline(): Promise<Orders[]> {
-    const twoDaysFromNow = new Date();
-    twoDaysFromNow.setDate(twoDaysFromNow.getDate() + 2);
-
-    const orders = await this.orderRepository.find({
-      where: {
-        status: 'Approve',
-        shipping_promise: LessThan(twoDaysFromNow),
-      },
-    });
-
-    return orders;
   }
 }
