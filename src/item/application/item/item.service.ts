@@ -19,13 +19,13 @@ export class ItemService {
       where: { item_id },
     });
   }
-  //create event
+  //create item
   async create(item: Item): Promise<Item> {
     const newItem = this.itemRepository.create(item);
     const savedItem = await this.itemRepository.save(newItem);
     return await this.itemRepository.save(savedItem);
   }
-  //update event
+  //update item
   async updateEvent(item_id: string, updatedItem: Item): Promise<Item> {
     const existingItem = await this.findOne(item_id);
     if (!existingItem) {

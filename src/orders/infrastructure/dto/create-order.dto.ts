@@ -1,5 +1,3 @@
-// create-order.dto.ts
-
 import { IsString, IsArray, IsDateString } from 'class-validator';
 
 export class CreateOrderDto {

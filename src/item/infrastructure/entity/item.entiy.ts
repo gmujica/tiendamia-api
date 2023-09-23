@@ -22,6 +22,9 @@ export class Item {
   price: string;
 
   @Column()
+  url: string;
+
+  @Column()
   quantity: number;
 
   @CreateDateColumn()

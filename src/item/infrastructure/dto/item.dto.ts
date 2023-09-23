@@ -14,6 +14,10 @@ export class ItemDto {
   price: string;
 
   @IsNotEmpty()
+  @IsString()
+  url: string;
+
+  @IsNotEmpty()
   @IsNumber()
   quantity: number;
 

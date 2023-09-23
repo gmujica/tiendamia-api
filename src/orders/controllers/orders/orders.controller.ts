@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OrdersService } from 'src/orders/application/orders/orders.service';
-import { DateRangeDto } from 'src/orders/infrastructure/dto/date-range.dto';
 import { Orders } from 'src/orders/infrastructure/entity/orders.entity';
 
 @Controller('orders')
@@ -20,13 +19,15 @@ export class OrdersController {
   //get all events
   @Get()
   @ApiTags('Orders')
+  @ApiOperation({ summary: 'Get All Orders' })
   async findAll(): Promise<Orders[]> {
     return await this.orderService.findAll();
   }
 
-  //get one event
+  //get one order
   @Get(':id')
   @ApiTags('Orders')
+  @ApiOperation({ summary: 'Get one order by ID' })
   async findOne(@Param('id') order_id: string): Promise<Orders | null> {
     const order = await this.orderService.findOnebyId(order_id);
     return order ? order : null;
@@ -75,8 +76,6 @@ export class OrdersController {
     description: 'The order has been successfully updated.',
     type: Orders,
   })
-  @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 404, description: 'Order not found' })
   @ApiTags('Orders')
   @ApiBody({
     type: Orders,
@@ -107,46 +106,8 @@ export class OrdersController {
     status: 204,
     description: 'The order has been successfully deleted.',
   })
-  @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 404, description: 'Order not found' })
   @ApiTags('Orders')
   async deleteOrder(@Param('id') order_id: string): Promise<void> {
     await this.orderService.deleteOrder(order_id);
-  }
-  // Report: Get orders in Traveling status within a date range
-  @Get('reports/traveling')
-  @ApiOperation({
-    summary: 'Get orders in Traveling status within a date range',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Successfully retrieved the report.',
-  })
-  @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiTags('Reports')
-  async getTravelingOrdersReport(
-    @Query('startDate') startDate: string,
-    @Query('endDate') endDate: string,
-  ): Promise<Orders[]> {
-    const dateRangeDto: DateRangeDto = { startDate, endDate };
-    const report = await this.orderService.getTravelingOrdersReport(
-      dateRangeDto,
-    );
-    return report;
-  }
-  // Get orders in "Approve" status with less than 2 days left for shipping promise
-  @Get('reports/approve-orders-with-deadline')
-  @ApiOperation({
-    summary:
-      'Get orders in Approve status with less than 2 days left for shipping promise',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Successfully retrieved the report.',
-  })
-  @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiTags('Reports')
-  async getApproveOrdersWithShippingPromiseDeadline(): Promise<Orders[]> {
-    return await this.orderService.getApproveOrdersWithShippingPromiseDeadline();
   }
 }

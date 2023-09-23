@@ -7,11 +7,13 @@ import { OrdersModule } from './orders/orders.module';
 import { ItemModule } from './item/item.module';
 import { Orders } from './orders/infrastructure/entity/orders.entity';
 import { Item } from './item/infrastructure/entity/item.entiy';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
     OrdersModule,
     ItemModule,
+    ReportsModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as any,
@@ -25,6 +27,7 @@ import { Item } from './item/infrastructure/entity/item.entiy';
       logging: true,
       autoLoadEntities: true,
     }),
+    ReportsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

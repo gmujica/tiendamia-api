@@ -8,7 +8,7 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ItemService } from 'src/item/application/item/item.service';
 import { Item } from 'src/item/infrastructure/entity/item.entiy';
 
@@ -19,18 +19,21 @@ export class ItemController {
   //get all items
   @Get()
   @ApiTags('items')
+  @ApiOperation({ summary: 'Get All Items' })
   async findAll(): Promise<Item[]> {
     return await this.itemService.findAll();
   }
   //get one item
   @Get(':id')
   @ApiTags('items')
+  @ApiOperation({ summary: 'Get one item by ID' })
   async findOne(@Param('id') item_id: string): Promise<Item | null> {
     const item = await this.itemService.findOne(item_id);
     return item ? item : null;
   }
   @Post()
   @ApiTags('items')
+  @ApiOperation({ summary: 'Create new item' })
   @ApiBody({
     type: Item,
     description: 'Create Item',
@@ -54,6 +57,7 @@ export class ItemController {
   // update event by ID
   @Put(':id')
   @ApiTags('items')
+  @ApiOperation({ summary: 'Update an existing item by ID' })
   @ApiBody({
     type: Item,
     description: 'Create Item',
@@ -87,6 +91,7 @@ export class ItemController {
   // delete event by ID
   @Delete(':id')
   @ApiTags('items')
+  @ApiOperation({ summary: 'Delete an existing item by ID' })
   async remove(
     @Param('id') item_id: string,
   ): Promise<void | NotFoundException> {
