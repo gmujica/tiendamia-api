@@ -44,16 +44,16 @@ describe('ItemService', () => {
       const itemId = '079d8c23-335e-4571-b6c3-499dd9f4806c';
       const item: Item = {} as Item;
       jest.spyOn(itemRepository, 'findOne').mockResolvedValue(item);
-  
+
       const result = await itemService.findOne(itemId);
-  
+
       expect(result).toEqual(item);
     });
-  
+
     it('should throw NotFoundException if item is not found', async () => {
       const itemId = 'non-existent-item-id';
       jest.spyOn(itemRepository, 'findOne').mockResolvedValue(undefined);
-    
+
       try {
         await itemService.findOne(itemId);
       } catch (error) {

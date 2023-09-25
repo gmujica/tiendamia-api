@@ -21,7 +21,7 @@ export class Item {
   @Column()
   price: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   url: string;
 
   @Column()

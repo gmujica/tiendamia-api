@@ -1,8 +1,8 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Orders } from 'src/orders/infrastructure/entity/orders.entity';
-import { ReportsService } from 'src/reports/application/reports/reports.service';
-import { DateRangeDto } from 'src/reports/infrastructure/dto/date-range.dto';
+import { Orders } from '../../../orders/infrastructure/entity/orders.entity';
+import { ReportsService } from '../../application/reports/reports.service';
+import { DateRangeDto } from '../../infrastructure/dto/date-range.dto';
 
 @Controller('reports')
 export class ReportsController {
