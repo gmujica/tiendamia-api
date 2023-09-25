@@ -42,7 +42,9 @@ export class OrdersService {
       status: order.status,
       client: order.client,
       shipping_address: order.shipping_address,
-      shipping_promise: order.shipping_promise.toISOString(),
+      shipping_promise: order.shipping_promise
+        ? order.shipping_promise.toISOString()
+        : null,
       items: order.items.map((item) => ({
         item_id: item.item_id,
         title: item.title,
@@ -68,9 +70,22 @@ export class OrdersService {
       throw new NotFoundException(`Order with ID ${order_id} not found.`);
     }
 
-    const mergedOrder = this.orderRepository.merge(existingOrder, updatedOrder);
+    // Update properties only if they are defined in updatedOrder
+    if (updatedOrder.status !== undefined) {
+      existingOrder.status = updatedOrder.status;
+    }
+    if (updatedOrder.client !== undefined) {
+      existingOrder.client = updatedOrder.client;
+    }
+    if (updatedOrder.shipping_address !== undefined) {
+      existingOrder.shipping_address = updatedOrder.shipping_address;
+    }
+    if (updatedOrder.shipping_promise !== undefined) {
+      existingOrder.shipping_promise = updatedOrder.shipping_promise;
+    }
 
-    const savedOrder = await this.orderRepository.save(mergedOrder);
+    // Merge the updated properties and save
+    const savedOrder = await this.orderRepository.save(existingOrder);
 
     return savedOrder;
   }

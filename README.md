@@ -16,6 +16,15 @@ You just have to run the docker command since the API and the database are in do
 $ npm install
 ```
 
+## .env file
+```bash
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=tiendamia
+```
+
 ## Running the app
 
 ```bash
@@ -28,15 +37,7 @@ $ docker compose up
 
 ```bash
 # unit test event
-$ npx jest event.service.spec.ts
-$ npx jest event.controller.spec.ts
-
-# unit test users
-$ npx jest users.service.spec.ts
-$ npx jest users.controller.spec.ts
-
-# test coverage
-$ npm run test:cov
+$ npx jest
 ```
 
 ## Swagger

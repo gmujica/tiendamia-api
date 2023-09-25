@@ -16,7 +16,7 @@ describe('ItemController', () => {
         ItemService,
         {
           provide: getRepositoryToken(Item),
-          useClass: ItemRepositoryMock, 
+          useClass: ItemRepositoryMock,
         },
       ],
     }).compile();
@@ -53,7 +53,7 @@ describe('ItemController', () => {
         created_at: new Date(),
         updated_at: new Date(),
         orders: [],
-    };
+      };
       jest.spyOn(itemService, 'findOne').mockResolvedValue(item);
 
       const result = await itemController.findOne(itemId);
@@ -82,8 +82,8 @@ describe('ItemController', () => {
         created_at: new Date(),
         updated_at: new Date(),
         orders: [],
-        item_id: '079d8c23-335e-4571-b6c3-499dd9f4806c'
-    };
+        item_id: '079d8c23-335e-4571-b6c3-499dd9f4806c',
+      };
       jest.spyOn(itemService, 'create').mockResolvedValue(newItem);
 
       const result = await itemController.create(newItem);

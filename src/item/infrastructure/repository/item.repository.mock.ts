@@ -1,4 +1,4 @@
-import { Item } from '../entity/item.entiy'
+import { Item } from '../entity/item.entiy';
 export class ItemRepositoryMock {
   private items: Item[] = [];
 

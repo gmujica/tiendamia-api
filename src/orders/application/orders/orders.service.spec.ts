@@ -1,14 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { OrdersService } from './orders.service';
-import { OrderRepositoryMock } from '../../infrastructure/repository/orders.repository.mock';
-import { ItemRepositoryMock } from '../../../item/infrastructure/repository/item.repository.mock'
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { OrdersService } from './orders.service';
 import { Orders } from '../../infrastructure/entity/orders.entity';
 import { Item } from '../../../item/infrastructure/entity/item.entiy';
+import { Repository } from 'typeorm';
 
 describe('OrdersService', () => {
   let ordersService: OrdersService;
+  let orderRepository: Repository<Orders>;
+  let itemRepository: Repository<Item>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -16,61 +17,87 @@ describe('OrdersService', () => {
         OrdersService,
         {
           provide: getRepositoryToken(Orders),
-          useClass: OrderRepositoryMock,
+          useClass: Repository,
         },
         {
           provide: getRepositoryToken(Item),
-          useClass: ItemRepositoryMock,
+          useClass: Repository,
         },
       ],
     }).compile();
 
     ordersService = module.get<OrdersService>(OrdersService);
-  });
-
-  it('should be defined', () => {
-    expect(ordersService).toBeDefined();
+    orderRepository = module.get<Repository<Orders>>(
+      getRepositoryToken(Orders),
+    );
+    itemRepository = module.get<Repository<Item>>(getRepositoryToken(Item));
   });
 
   describe('findAll', () => {
     it('should return an array of orders', async () => {
-      // Implement test logic here
+      const mockOrders = [{}, {}] as Orders[];
+      jest.spyOn(orderRepository, 'find').mockResolvedValue(mockOrders);
+
+      const result = await ordersService.findAll();
+
+      expect(result).toEqual(mockOrders);
     });
   });
 
   describe('createOrder', () => {
     it('should create a new order', async () => {
-      // Implement test logic here
+      const orderData = {
+        status: 'Approve',
+        client: 'client name',
+        shipping_address: '123 Main St, City, Country',
+        shipping_promise: new Date(),
+      }; // order data
+      const itemIds = [
+        '079d8c23-335e-4571-b6c3-499dd9f4806c',
+        '77adf013-f699-4046-9244-a1109dc7b773',
+      ]; // item IDs
+      const mockOrder = {} as Orders;
+
+      jest.spyOn(orderRepository, 'create').mockReturnValue(mockOrder);
+      jest.spyOn(itemRepository, 'findByIds').mockResolvedValue([]);
+      jest.spyOn(orderRepository, 'save').mockResolvedValue(mockOrder);
+
+      const result = await ordersService.createOrder(orderData, itemIds);
+
+      expect(result).toEqual(mockOrder);
     });
   });
 
-  describe('findOnebyId', () => {
-    it('should return a single order by ID', async () => {
-      // Implement test logic here
-    });
-
+  describe('findOneById', () => {
     it('should throw NotFoundException if order is not found', async () => {
-      // Implement test logic here
+      const order_id = '9b82e814-9737-4c44-814f-b4932cc10683'; // non-existent order ID
+
+      jest.spyOn(orderRepository, 'findOne').mockResolvedValue(null);
+
+      await expect(ordersService.findOnebyId(order_id)).rejects.toThrowError(
+        NotFoundException,
+      );
     });
   });
 
   describe('updateOrder', () => {
-    it('should update an existing order by ID', async () => {
-      // Implement test logic here
-    });
-
     it('should throw NotFoundException if order is not found', async () => {
-      // Implement test logic here
+      const order_id = '9b82e814-9737-4c44-814f-b4932cc10683'; // non-existent order ID
+      const updatedOrderData = {
+        client: 'client name',
+        shipping_address: '123 Main St, City, Country',
+        shipping_promise: new Date(),
+      }; //updated order data
+
+      jest.spyOn(orderRepository, 'findOne').mockResolvedValue(null);
+
+      await expect(
+        ordersService.updateOrder(order_id, updatedOrderData),
+      ).rejects.toThrowError(NotFoundException);
     });
   });
 
-  describe('deleteOrder', () => {
-    it('should delete an order by ID', async () => {
-      // Implement test logic here
-    });
-
-    it('should throw NotFoundException if order is not found', async () => {
-      // Implement test logic here
-    });
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 });

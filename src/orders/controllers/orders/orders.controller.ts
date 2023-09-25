@@ -9,8 +9,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { OrdersService } from 'src/orders/application/orders/orders.service';
-import { Orders } from 'src/orders/infrastructure/entity/orders.entity';
+import { OrdersService } from '../../application/orders/orders.service';
+import { Orders } from '../../infrastructure/entity/orders.entity';
 
 @Controller('orders')
 export class OrdersController {
