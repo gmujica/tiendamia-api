@@ -40,6 +40,9 @@ $ docker compose up
 $ npx jest
 ```
 
+## DB
+![img](docs/db.png)
+
 ## Swagger
 ### `/docs`
 Items Module
