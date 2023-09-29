@@ -21,8 +21,8 @@ describe('OrdersController', () => {
       providers: [
         {
           provide: OrdersService,
-          useValue: {mockOrder} 
-        }
+          useValue: { mockOrder },
+        },
       ],
     }).compile();
 
